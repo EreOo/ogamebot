@@ -1,5 +1,6 @@
 package ogame;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.By;
 
@@ -10,10 +11,27 @@ public class Test {
 
 
     @org.testng.annotations.Test
-    public static void bot() {
+    public static void bot() throws InterruptedException {
         openOgame();
         signIn();
+        $(By.id("menuTable")).find(By.tagName("li"), 5).click();
+        buildAirShip1();
 
+
+    }
+
+    private static void buildAirShip1() throws InterruptedException {
+        while (true) {
+            if (Double.parseDouble($(By.id("resources_metal")).getText()) >= 3.000
+                    && Double.parseDouble($(By.id("resources_crystal")).getText()) >= 1.5000) {
+                $(By.id("button1")).click();
+                $(By.id("number")).setValue("1");
+                $(By.className("build-it")).click();
+            }
+            else{
+                Thread.sleep(360000);
+            }
+        }
     }
 
     private static void openOgame() {
